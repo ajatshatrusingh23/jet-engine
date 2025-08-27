@@ -1,0 +1,14 @@
+.main-content {
+  display: flex; /* Creates the side-by-side layout */
+  justify-content: space-between;
+  padding: 40px 80px;
+  gap: 40px; /* Adds space between the posts feed and the trending sidebar */
+}
+
+.posts-column {
+  flex: 3; /* This column will take up 3/4 of the available space */
+}
+
+.trending-column {
+  flex: 1; /* This column will take up 1/4 of the available space */
+}
