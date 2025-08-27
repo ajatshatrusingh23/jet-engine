@@ -6,10 +6,10 @@
       "use": "@vercel/node"
     },
     {
-      "src": "frontend/package.json",
+      "src": "jet-engines-talks/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist" 
+        "distDir": "dist"
       }
     }
   ],
@@ -20,7 +20,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/frontend/$1"
+      "destination": "/jet-engines-talks/$1"
     }
   ]
 }
