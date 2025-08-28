@@ -20,6 +20,8 @@ app.get('/api', (req, res) => {
 app.use('/api/posts', postRoutes);
 app.use('/api/users', userRoutes);
 
+
+
 // --- Define Port ---
 const PORT = process.env.PORT || 5001;
 
