@@ -1,0 +1,23 @@
+ 
+node_modules/
+
+# Environment Variables
+# This file contains your secret keys (database password, JWT secret).
+# It should NEVER be committed to GitHub.
+.env
+
+# Log files
+# These are generated during development for debugging.
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+# These are specific to your code editor (like VS Code) and not part of the project code.
+.vscode/
+.idea/
+
+# OS generated files
+# These are created by your operating system (macOS, Windows).
+.DS_Store
+Thumbs.db
