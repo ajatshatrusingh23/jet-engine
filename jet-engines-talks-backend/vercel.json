@@ -2,25 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "../jet-engines-talks/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    },
-    {
       "src": "./api/server.js",
       "use": "@vercel/node"
     }
   ],
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/server.js"
-    },
-    {
       "source": "/(.*)",
-      "destination": "/../jet-engines-talks/dist/index.html"
+      "destination": "/api/server.js"
     }
   ]
 }
