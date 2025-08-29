@@ -1,14 +1,7 @@
- const API_BASE_URL = import.meta.env.VITE_API_URL;
+ import axios from "axios";
 
-export const fetchPosts = async () => {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/posts`);
-    if (!res.ok) {
-      throw new Error(`Failed to fetch posts: ${res.status} ${res.statusText}`);
-    }
-    return await res.json();
-  } catch (err) {
-    console.error("Error fetching posts:", err);
-    throw err;
-  }
-};
+const ke = axios.create({
+  baseURL: import.meta.env.VITE_API_URL, // should be https://jet-engine-api.vercel.app
+});
+
+export default ke;
