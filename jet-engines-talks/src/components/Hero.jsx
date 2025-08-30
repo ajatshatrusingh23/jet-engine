@@ -9,7 +9,7 @@ function Hero() {
   return (
     <div className="hero-container">
       <div className="hero-content">
-        <h1>Jet Engines Talks</h1>
+        <h1>Jet Engine Talks</h1>
         <p>
           A community-driven platform where users can post, comment, and share
           knowledge about jet engine technologies.

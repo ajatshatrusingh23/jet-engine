@@ -1,8 +1,8 @@
  import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { AuthContext } from '../context/AuthContext.js';
 import './Form.css';
+import api from '../api'; // 👈 import our api instance
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -23,14 +23,15 @@ function LoginPage() {
     e.preventDefault();
     setError(null);
     setLoading(true);
+
     try {
       const config = { headers: { 'Content-Type': 'application/json' } };
-      const { data } = await axios.post(
-        '/api/users/login ',
-        { email, password },
-        config
-      );
+
+      // 👇 use api.js + remove extra space after "login"
+      const { data } = await api.post('/users/login', { email, password }, config);
+
       login(data);
+      setLoading(false);
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
       setLoading(false);
@@ -44,11 +45,25 @@ function LoginPage() {
         {error && <div className="form-error">{error}</div>}
         <div className="form-group">
           <label htmlFor="email">Email Address</label>
-          <input type="email" id="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input type="password" id="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
         </div>
         <button type="submit" className="form-button" disabled={loading}>
           {loading ? 'Signing In...' : 'Sign In'}

@@ -1,8 +1,8 @@
  import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { AuthContext } from '../context/AuthContext.js';
 import './Form.css';
+import api from '../api'; // 👈 import api instance
 
 function RegisterPage() {
   const [name, setName] = useState('');
@@ -24,14 +24,15 @@ function RegisterPage() {
     e.preventDefault();
     setError(null);
     setLoading(true);
+
     try {
       const config = { headers: { 'Content-Type': 'application/json' } };
-      const { data } = await axios.post(
-        'http://localhost:5001/api/users/register',
-        { name, email, password },
-        config
-      );
+
+      // 👇 use api.js instead of hardcoding localhost
+      const { data } = await api.post('/users/register', { name, email, password }, config);
+
       login(data);
+      setLoading(false);
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
       setLoading(false);
@@ -45,15 +46,36 @@ function RegisterPage() {
         {error && <div className="form-error">{error}</div>}
         <div className="form-group">
           <label htmlFor="name">Name</label>
-          <input type="text" id="name" placeholder="Enter your name" value={name} onChange={(e) => setName(e.target.value)} required />
+          <input
+            type="text"
+            id="name"
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
         </div>
         <div className="form-group">
           <label htmlFor="email">Email Address</label>
-          <input type="email" id="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input type="password" id="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
         </div>
         <button type="submit" className="form-button" disabled={loading}>
           {loading ? 'Registering...' : 'Register'}

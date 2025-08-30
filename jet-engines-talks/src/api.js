@@ -1,7 +1,11 @@
- import axios from "axios";
+// src/api.js
+import axios from 'axios';
 
-const ke = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // should be https://jet-engine-api.vercel.app
+const api = axios.create({
+  baseURL: "https://jet-engine-api.vercel.app/api",  // replace with your backend deployed link
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-export default ke;
+export default api;

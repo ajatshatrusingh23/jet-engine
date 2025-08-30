@@ -17,7 +17,7 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-logo">
         <a href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <p>JET ENGINES TALKS</p>
+          <p>JET ENGINE TALKS</p>
         </a>
       </div>
       <div className="navbar-links">

@@ -1,8 +1,8 @@
  import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
 import { AuthContext } from '../context/AuthContext.js';
 import PostCard from './PostCard';
 import './PostsFeed.css';
+import api from '../api'; // 👈 import our api instance
 
 function PostsFeed() {
   const [posts, setPosts] = useState([]);
@@ -15,7 +15,7 @@ function PostsFeed() {
       try {
         setLoading(true);
         setError(null);
-        const { data } = await axios.get('/api/posts');
+        const { data } = await api.get('/posts'); // 👈 changed
         if (Array.isArray(data)) {
           setPosts(data);
         } else {
@@ -33,12 +33,9 @@ function PostsFeed() {
   }, [refreshNeeded]);
 
   const likeHandler = async (postId) => {
-    if (!userInfo || !userInfo.token) { // More robust check
+    if (!userInfo || !userInfo.token) {
       return alert('You must be logged in to like posts.');
     }
-    
-    // --- DEBUGGING LOG ---
-    console.log('Sending token:', userInfo.token);
 
     try {
       const config = {
@@ -46,33 +43,31 @@ function PostsFeed() {
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      const { data } = await axios.put(`/api/posts/${postId}/like`, {}, config);
+      const { data } = await api.put(`/posts/${postId}/like`, {}, config); // 👈 changed
       setPosts(posts.map(p => (p._id === postId ? data : p)));
     } catch (err) {
       console.error('Failed to like post:', err.response?.data?.message || err.message);
-      alert('Error: Could not like post.'); // Give user feedback
+      alert('Error: Could not like post.');
     }
   };
 
-   // Inside PostsFeed.jsx
-const commentSubmitHandler = async (postId, text) => {
-  if (!userInfo) {
-    return alert('Please log in to comment.');
-  }
-  try {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-    // Ensure the body { text } is being sent correctly here
-    const { data } = await axios.post(`/api/posts/${postId}/comments`, { text }, config);
-    setPosts(posts.map(p => (p._id === postId ? data : p)));
-  } catch (err) {
-    console.error('Failed to add comment:', err.response?.data?.message || err.message);
-  }
-};
+  const commentSubmitHandler = async (postId, text) => {
+    if (!userInfo) {
+      return alert('Please log in to comment.');
+    }
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const { data } = await api.post(`/posts/${postId}/comments`, { text }, config); // 👈 changed
+      setPosts(posts.map(p => (p._id === postId ? data : p)));
+    } catch (err) {
+      console.error('Failed to add comment:', err.response?.data?.message || err.message);
+    }
+  };
 
   if (loading) {
     return <div className="feed-status">Loading posts...</div>;

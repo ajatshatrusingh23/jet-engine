@@ -1,8 +1,8 @@
  import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { AuthContext } from '../context/AuthContext.js';
 import './Form.css';
+import api from '../api'; // 👈 import api instance
 
 function CreatePostPage() {
   const [title, setTitle] = useState('');
@@ -10,7 +10,7 @@ function CreatePostPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const { userInfo } = useContext(AuthContext); // Get userInfo to access the auth token
+  const { userInfo } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const submitHandler = async (e) => {
@@ -19,25 +19,19 @@ function CreatePostPage() {
     setError(null);
 
     try {
-      // We must include the user's token in the request headers
-      // to access a protected route.
       const config = {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`, // This is the crucial part
+          Authorization: `Bearer ${userInfo.token}`,
         },
       };
 
-      // Make the POST request to our new endpoint
-      const { data } = await axios.post(
-        'http://localhost:5001/api/posts',
-        { title, content },
-        config
-      );
+      // 👇 use api.js instead of hardcoding localhost
+      const { data } = await api.post('/posts', { title, content }, config);
 
       console.log('Post created successfully:', data);
       setLoading(false);
-      navigate('/'); // Redirect to the homepage to see the new post
+      navigate('/');
 
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
